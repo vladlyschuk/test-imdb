@@ -60,7 +60,9 @@ export class BasePage {
 
   async handleCookieBanner(): Promise<void> {
     await test.step('Handle cookie banner if present', async () => {
-      await this.cookieBannerLocator.click();
+      if (await this.isElementVisible(this.cookieBannerLocator)) {
+        await this.cookieBannerLocator.click();
+      }
     });
   }
 } 
