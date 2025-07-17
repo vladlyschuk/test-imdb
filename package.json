@@ -1,0 +1,20 @@
+{
+  "name": "test-task",
+  "version": "1.0.0",
+  "description": "Test task for IMDb",
+  "main": "index.js",
+  "scripts": {
+    "test": "npx playwright test",
+    "test:headed": "npx playwright test --headed",
+    "report": "npx playwright show-report",
+    "install:browsers": "npx playwright install"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@playwright/test": "^1.54.1",
+    "@types/node": "^24.0.14",
+    "typescript": "^5.8.3"
+  }
+}
