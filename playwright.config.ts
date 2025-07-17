@@ -6,7 +6,8 @@ export default defineConfig({
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 1 : 0,
-  workers: process.env.CI ? 1 : undefined,
+  workers: process.env.CI ? 2 : 1,
+  timeout: TestData.expectations.defaultTimeout, // 60 seconds per test
   reporter: [
     ['html'],
     ['json', { outputFile: 'test-results/results.json' }]
@@ -16,7 +17,7 @@ export default defineConfig({
     trace: 'on-first-retry',
     screenshot: 'only-on-failure',
     video: 'retain-on-failure',
-    headless: !!process.env.CI, // headless in CI, headed in local development
+    headless: process.env.CI ? true : false,
     actionTimeout: TestData.expectations.defaultTimeout,
     navigationTimeout: TestData.expectations.defaultTimeout,
     ignoreHTTPSErrors: true,

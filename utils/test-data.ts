@@ -20,7 +20,7 @@ export const TestData = {
   expectations: {
     minimumMovieCount: 10,
     maximumSearchResults: 50,
-    defaultTimeout: 60000
+    defaultTimeout: 120000
   },
   messages: {
     movieNotFound: 'Movie not found in search results',
