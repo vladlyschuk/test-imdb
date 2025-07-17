@@ -16,7 +16,7 @@ export default defineConfig({
     trace: 'on-first-retry',
     screenshot: 'only-on-failure',
     video: 'retain-on-failure',
-    headless: false,
+    headless: !!process.env.CI, // headless in CI, headed in local development
     actionTimeout: TestData.expectations.defaultTimeout,
     navigationTimeout: TestData.expectations.defaultTimeout,
     ignoreHTTPSErrors: true,
