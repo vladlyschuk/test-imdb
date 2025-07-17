@@ -11,7 +11,7 @@ export class BasePage {
 
   async navigateTo(url: string): Promise<void> {
     await test.step(`Navigate to URL: ${url}`, async () => {
-      await this.page.goto(url, { waitUntil: 'load' });
+      await this.page.goto(url, { waitUntil: 'networkidle' });
       await this.handleCookieBanner();
     });
   }

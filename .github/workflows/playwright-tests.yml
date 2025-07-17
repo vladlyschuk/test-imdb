@@ -8,9 +8,9 @@ on:
   workflow_dispatch:
 
 jobs:
-  chromium-tests:
-    name: Chromium Tests
-    timeout-minutes: 20
+  cross-browser-tests:
+    name: Cross-Browser Tests (Parallel)
+    timeout-minutes: 30
     runs-on: ubuntu-latest
     
     steps:
@@ -29,104 +29,28 @@ jobs:
     - name: Install Playwright browsers
       run: npx playwright install --with-deps
 
-    - name: Run tests in Chromium
-      run: npm run test -- --project=chromium
+    - name: Run tests across all browsers (parallel)
+      run: npm run test
 
-    - name: Upload Chromium test artifacts
+    - name: Upload cross-browser test artifacts
       uses: actions/upload-artifact@v4
       if: always()
       with:
-        name: chromium-report-${{ github.run_number }}
+        name: cross-browser-report-${{ github.run_number }}
         path: |
           playwright-report/
           test-results/
         retention-days: 30
 
-  firefox-tests:
-    name: Firefox Tests
-    timeout-minutes: 20
-    runs-on: ubuntu-latest
-    
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
-
-    - name: Setup Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: '18'
-        cache: 'npm'
-
-    - name: Install dependencies
-      run: npm ci
-
-    - name: Install Playwright browsers
-      run: npx playwright install --with-deps
-
-    - name: Run tests in Firefox
-      run: npm run test -- --project=firefox
-
-    - name: Upload Firefox test artifacts
-      uses: actions/upload-artifact@v4
+    - name: Create test summary
       if: always()
-      with:
-        name: firefox-report-${{ github.run_number }}
-        path: |
-          playwright-report/
-          test-results/
-        retention-days: 30
-
-  webkit-tests:
-    name: WebKit Tests
-    timeout-minutes: 20
-    runs-on: ubuntu-latest
-    
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
-
-    - name: Setup Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: '18'
-        cache: 'npm'
-
-    - name: Install dependencies
-      run: npm ci
-
-    - name: Install Playwright browsers
-      run: npx playwright install --with-deps
-
-    - name: Run tests in WebKit
-      run: npm run test -- --project=webkit
-
-    - name: Upload WebKit test artifacts
-      uses: actions/upload-artifact@v4
-      if: always()
-      with:
-        name: webkit-report-${{ github.run_number }}
-        path: |
-          playwright-report/
-          test-results/
-        retention-days: 30
-
-  test-summary:
-    name: Browser Test Summary
-    needs: [chromium-tests, firefox-tests, webkit-tests]
-    runs-on: ubuntu-latest
-    if: always()
-    
-    steps:
-    - name: Create browser test summary
       run: |
-        echo "## 🌐 Cross-Browser Test Results" >> $GITHUB_STEP_SUMMARY
+        echo "## 🌐 Cross-Browser Test Results (Parallel)" >> $GITHUB_STEP_SUMMARY
         echo "" >> $GITHUB_STEP_SUMMARY
-        echo "### Browser Results:" >> $GITHUB_STEP_SUMMARY
-        echo "- **🟦 Chromium**: ${{ needs.chromium-tests.result }}" >> $GITHUB_STEP_SUMMARY
-        echo "- **🟧 Firefox**: ${{ needs.firefox-tests.result }}" >> $GITHUB_STEP_SUMMARY
-        echo "- **🟪 WebKit (Safari)**: ${{ needs.webkit-tests.result }}" >> $GITHUB_STEP_SUMMARY
+        echo "✅ Tests ran in parallel across:" >> $GITHUB_STEP_SUMMARY
+        echo "- 🟦 **Chromium** (Chrome, Edge)" >> $GITHUB_STEP_SUMMARY
+        echo "- 🟧 **Firefox**" >> $GITHUB_STEP_SUMMARY  
+        echo "- 🟪 **WebKit** (Safari)" >> $GITHUB_STEP_SUMMARY
         echo "" >> $GITHUB_STEP_SUMMARY
-        echo "### Download Reports:" >> $GITHUB_STEP_SUMMARY
-        echo "- 📊 [\`chromium-report-${{ github.run_number }}\`] - Chrome/Edge test results" >> $GITHUB_STEP_SUMMARY
-        echo "- 📊 [\`firefox-report-${{ github.run_number }}\`] - Firefox test results" >> $GITHUB_STEP_SUMMARY
-        echo "- 📊 [\`webkit-report-${{ github.run_number }}\`] - Safari test results" >> $GITHUB_STEP_SUMMARY
+        echo "📊 **Download Report**: \`cross-browser-report-${{ github.run_number }}\`" >> $GITHUB_STEP_SUMMARY
+        echo "📁 The report contains results from all browsers in one unified view" >> $GITHUB_STEP_SUMMARY

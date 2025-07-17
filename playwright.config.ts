@@ -6,7 +6,7 @@ export default defineConfig({
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
   retries: 0,
-  workers: 2,
+  workers: 10,
   timeout: TestData.expectations.defaultTimeout * 2, 
   reporter: [
     ['html'],
