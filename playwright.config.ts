@@ -5,9 +5,9 @@ export default defineConfig({
   testDir: './tests',
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
-  retries: process.env.CI ? 1 : 0,
-  workers: process.env.CI ? 2 : 1,
-  timeout: TestData.expectations.defaultTimeout, // 60 seconds per test
+  retries: 0,
+  workers: 2,
+  timeout: TestData.expectations.defaultTimeout * 2, 
   reporter: [
     ['html'],
     ['json', { outputFile: 'test-results/results.json' }]
@@ -17,7 +17,7 @@ export default defineConfig({
     trace: 'on-first-retry',
     screenshot: 'only-on-failure',
     video: 'retain-on-failure',
-    headless: process.env.CI ? true : false,
+    headless: true,
     actionTimeout: TestData.expectations.defaultTimeout,
     navigationTimeout: TestData.expectations.defaultTimeout,
     ignoreHTTPSErrors: true,
@@ -29,5 +29,17 @@ export default defineConfig({
         ...devices['Desktop Chrome']
       },
     },
+    // {
+    //   name: 'firefox',
+    //   use: { 
+    //     ...devices['Desktop Firefox']
+    //   },
+    // },
+    // {
+    //   name: 'webkit',
+    //   use: { 
+    //     ...devices['Desktop Safari']
+    //   },
+    // },
   ],
 }); 

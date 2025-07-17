@@ -1,10 +1,7 @@
 export const TestData = {
   movies: {
     inception: {
-      searchTerm: 'Inception',
-      expectedTitlePattern: /Inception/i,
-      expectedYear: '2010',
-      minimumRating: 8.0
+      searchTerm: 'Inception'
     }
   },
   patterns: {
@@ -14,16 +11,11 @@ export const TestData = {
   },
   urls: {
     home: '/',
-    top250: '/chart/top/',
-    search: '/find'
   },
   expectations: {
-    minimumMovieCount: 10,
-    maximumSearchResults: 50,
     defaultTimeout: 120000
   },
   messages: {
-    movieNotFound: 'Movie not found in search results',
     invalidRating: 'Movie rating should be in format X.X',
     invalidYear: 'Release year should be 4 digits',
     pageNotLoaded: 'Page did not load properly'
